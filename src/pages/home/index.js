@@ -1,17 +1,31 @@
-import {useState} from 'react'
-import { View , Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity} from 'react-native';
+import {useState, useEffect} from 'react'
+import { View , Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, FlatList, } from 'react-native';
 /*SafeAreaView: é mais para iphone onde a minha interface vai ficar abaixo da ilha dinamica*/
 /*TextInput: Caixa de texto para escrever/ Pesquisar*/
 /*TouchableOpacity: Um botão "clicavel"*/
 import {Ionicons} from '@expo/vector-icons'
-
 import {Logo} from '../../components/logo'
+import api from '../../services/api'
+import {FoodList} from '../../components/foodlist/'
+
+
 
 export function Home(){
 
     /*Variavel sendo criada usando useState do React*/
     /*Uma caixinha onde armazena um valor(inputValue), que foi trocado de algo vazio(setInputValue = '') pelo que eu escrevi*/
     const [inputValue, setInputValue] = useState('')
+    const [foods, setFoods] = useState([])
+
+    useEffect(() => {
+        async function fetchApi(){
+            const response = await api.get('/foods')
+            setFoods(response.data)
+        }
+
+        fetchApi();
+    }, [])
+
 
     /*Criando uma função onde foi chamada ao clicar no botao na linha 37*/
     function handleShearch(){
@@ -42,6 +56,14 @@ export function Home(){
                     <Ionicons name='search' size={28} color='#4cbe6c' />
                 </TouchableOpacity>
             </View>
+
+        <FlatList
+        data={foods}
+        keyExtractor={(item) => String(item.id)}
+        renderItem={({item}) => <FoodList data={item} />}
+        showsVerticalScrollIndicator={false}
+        />
+
 
         </SafeAreaView>
     )
