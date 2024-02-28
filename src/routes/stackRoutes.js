@@ -21,7 +21,9 @@ export function StackRoutes(){
             <Stack.Screen 
                 name='Search' 
                 component={Search}
-                options={{title:'Veja o que encontramos'}}
+                options={{
+                    title:'Veja o que encontramos'
+                }}
             />
         </Stack.Navigator>
     )

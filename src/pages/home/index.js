@@ -7,6 +7,8 @@ import {Ionicons} from '@expo/vector-icons'
 import {Logo} from '../../components/logo'
 import api from '../../services/api'
 import {FoodList} from '../../components/foodlist/'
+import {useNavigation} from '@react-navigation/native'
+import {Text as MotiText} from 'moti'
 
 
 
@@ -16,6 +18,8 @@ export function Home(){
     /*Uma caixinha onde armazena um valor(inputValue), que foi trocado de algo vazio(setInputValue = '') pelo que eu escrevi*/
     const [inputValue, setInputValue] = useState('')
     const [foods, setFoods] = useState([])
+
+    const navigation = useNavigation();
 
     useEffect(() => {
         async function fetchApi(){
@@ -28,18 +32,54 @@ export function Home(){
 
 
     /*Criando uma função onde foi chamada ao clicar no botao na linha 37*/
-    function handleShearch(){
-        console.log('Voce digitou:')
-        /*Puxando o que foi armazenado na variavel inputValue*/
-        console.log(inputValue)
+    function handleSearch(){
+        if(!inputValue) return;
+
+        let input = inputValue;
+        setInputValue('')
+        navigation.navigate('Search', {name: input})
     }
 
 
     return (
         <SafeAreaView style={styles.container}>
             <Logo/>
-            <Text style={styles.title}>Encontre a receita</Text>
-            <Text style={styles.title}>que combine com voce</Text>
+            <MotiText 
+                style={styles.title}
+                from={{
+                    opacity:0,
+                    translateY: 15,
+                }}
+                animate={{
+                    opacity:1,
+                    translateY: 0
+                }}
+                transition={{
+                    delay:100,
+                    type:'timing',
+                    duration:650
+                }}
+                >
+                    Encontre a receita
+            </MotiText>
+            <MotiText 
+                style={styles.title}
+                from={{
+                    opacity:0,
+                    translateY: 19,
+                }}
+                animate={{
+                    opacity:1,
+                    translateY: 0
+                }}
+                transition={{
+                    delay:200,
+                    type:'timing',
+                    duration:850
+                }}
+                >  
+                    que combine com voce
+            </MotiText>
 
             <View style={styles.form}>
                 <TextInput
@@ -52,16 +92,16 @@ export function Home(){
                     onChangeText={(Text) => setInputValue(Text)}
                 />
                 
-                <TouchableOpacity onPress={handleShearch}>
+                <TouchableOpacity onPress={handleSearch}>
                     <Ionicons name='search' size={28} color='#4cbe6c' />
                 </TouchableOpacity>
             </View>
 
         <FlatList
-        data={foods}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({item}) => <FoodList data={item} />}
-        showsVerticalScrollIndicator={false}
+            data={foods}
+            keyExtractor={(item) => String(item.id)}
+            renderItem={({item}) => <FoodList data={item} />}
+            showsVerticalScrollIndicator={false}
         />
 
 
