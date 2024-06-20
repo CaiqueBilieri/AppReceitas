@@ -5,3 +5,9 @@ const api = axios.create({
 })
 
 export default api;
+
+/* json-server --watch -d 180 --host 192.168.x.xxx db.json
+
+ou
+
+json-server --watch -p 180 --host 192.168.x.xxx db.json */
